@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasa Sport | Ropa Deportiva de Lujo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos (WhatsApp, Gmail, Facebook, redes y UI) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Playfair Display para elegancia -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            light: '#E6C567',
+                            DEFAULT: '#D4AF37',
+                            dark: '#AA820A'
+                        },
+                        rose: {
+                            light: '#FFE4E9',
+                            DEFAULT: '#E87EA1',
+                            soft: '#FFB6C1',
+                            deep: '#C25277'
+                        },
+                        darkBg: '#121212',
+                        cardBg: '#1A1A1A'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados adicionales y animaciones suaves */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d;
+            color: #f3f4f6;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFB6C1 0%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border {
+            border-color: #D4AF37;
+        }
+        .rose-glow:hover {
+            box-shadow: 0 0 25px rgba(232, 126, 161, 0.4);
+        }
+        .gold-glow:hover {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        }
+        /* Transición de páginas */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-[#0d0d0d] text-gray-100 min-h-screen flex flex-col selection:bg-rose-400 selection:text-black">
+
+    <!-- Notificación / Mensaje personalizado flotante (sin usar alert) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#1A1A1A] border-2 border-[#D4AF37] text-white px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3">
+        <i class="fa-solid fa-circle-check text-[#D4AF37] text-xl" id="toast-icon"></i>
+        <div>
+            <h4 class="font-bold text-sm text-[#FFB6C1]" id="toast-title">Notificación</h4>
+            <p class="text-xs text-gray-300" id="toast-msg">Mensaje enviado con éxito.</p>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVEGACIÓN -->
+    <header class="sticky top-0 z-40 bg-[#121212]/95 backdrop-blur-md border-b border-[#D4AF37]/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logotipo de la Marca -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('inicio')">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#D4AF37] to-[#E87EA1] flex items-center justify-center shadow-lg shadow-[#D4AF37]/20">
+                    <span class="font-serif font-bold text-black text-2xl">S</span>
+                </div>
+                <div>
+                    <span class="text-2xl font-serif font-bold tracking-wider gold-gradient-text">SASA SPORT</span>
+                    <span class="block text-[10px] tracking-widest text-rose-soft uppercase font-semibold">Luxury Activewear</span>
+                </div>
+            </div>
+
+            <!-- Navegación de Escritorio -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium">
+                <button onclick="switchPage('inicio')" id="nav-inicio" class="nav-btn text-rose-soft transition-colors hover:text-[#D4AF37] pb-1 border-b-2 border-[#D4AF37]">Inicio</button>
+                <button onclick="switchPage('catalogo')" id="nav-catalogo" class="nav-btn text-gray-300 transition-colors hover:text-[#D4AF37] pb-1 border-b-2 border-transparent">Catálogo & Servicios</button>
+                <button onclick="switchPage('nosotros')" id="nav-nosotros" class="nav-btn text-gray-300 transition-colors hover:text-[#D4AF37] pb-1 border-b-2 border-transparent">Nosotros</button>
+                <button onclick="switchPage('contacto')" id="nav-contacto" class="nav-btn text-gray-300 transition-colors hover:text-[#D4AF37] pb-1 border-b-2 border-transparent">Contacto</button>
+            </nav>
+
+            <!-- Acciones rápidas (WhatsApp CTA y Menú Móvil) -->
+            <div class="flex items-center space-x-4">
+                <a href="https://wa.me/573001234567?text=Hola%20Sasa%20Sport,%20quiero%20información%20sobre%20su%20ropa%20deportiva" target="_blank" class="hidden sm:inline-flex items-center space-x-2 bg-gradient-to-r from-[#D4AF37] to-[#E87EA1] text-black font-semibold px-5 py-2.5 rounded-full shadow-lg hover:opacity-95 transition-all transform hover:scale-105">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>WhatsApp</span>
+                </a>
+                <!-- Botón Menú Móvil -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-200 hover:text-[#D4AF37] focus:outline-none text-2xl p-2">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#1A1A1A] border-b border-gray-800 px-6 py-5 space-y-4 shadow-xl">
+            <button onclick="switchPage('inicio'); toggleMobileMenu();" class="block w-full text-left text-gray-200 hover:text-[#D4AF37] font-medium py-2">Inicio</button>
+            <button onclick="switchPage('catalogo'); toggleMobileMenu();" class="block w-full text-left text-gray-200 hover:text-[#D4AF37] font-medium py-2">Catálogo & Servicios</button>
+            <button onclick="switchPage('nosotros'); toggleMobileMenu();" class="block w-full text-left text-gray-200 hover:text-[#D4AF37] font-medium py-2">Nosotros</button>
+            <button onclick="switchPage('contacto'); toggleMobileMenu();" class="block w-full text-left text-gray-200 hover:text-[#D4AF37] font-medium py-2">Contacto</button>
+            <a href="https://wa.me/573001234567" target="_blank" class="flex items-center justify-center space-x-2 w-full bg-gradient-to-r from-[#D4AF37] to-[#E87EA1] text-black font-semibold py-3 rounded-xl mt-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>Escribir por WhatsApp</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL (MULTIPÁGINA VIRTUAL) -->
+    <main class="flex-grow">
+
+        <!-- ================= 1. PÁGINA DE INICIO ================= -->
+        <section id="page-inicio" class="page-section active">
+            <!-- Hero Banner Principal -->
+            <div class="relative overflow-hidden bg-[#121212] py-20 lg:py-28">
+                <div class="absolute inset-0 z-0 opacity-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=1920&q=80')"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0d0d0d] via-[#0d0d0d]/80 to-transparent z-0"></div>
+                
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <span class="inline-block bg-[#1A1A1A] border border-[#D4AF37]/50 text-[#D4AF37] px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase">
+                            ✨ Colección Exclusiva 2026
+                        </span>
+                        <h1 class="text-4xl sm:text-6xl font-serif font-bold leading-tight">
+                            Eleva tu entrenamiento con <span class="gold-gradient-text">Elegancia y Lujo</span>
+                        </h1>
+                        <p class="text-gray-300 text-base sm:text-lg max-w-xl">
+                            Diseñamos prendas deportivas de alta gama que fusionan tecnología de compresión avanzada con una paleta sofisticada de tonos dorados y rosas exclusivos para mujeres decididas.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-4">
+                            <button onclick="switchPage('catalogo')" class="bg-gradient-to-r from-[#D4AF37] to-[#E87EA1] text-black font-bold px-8 py-4 rounded-xl shadow-xl hover:opacity-95 transition-all transform hover:-translate-y-1">
+                                Ver Catálogo Completo
+                            </button>
+                            <button onclick="switchPage('nosotros')" class="border-2 border-[#D4AF37] text-white font-semibold px-8 py-4 rounded-xl hover:bg-[#D4AF37]/10 transition-all">
+                                Conoce Nuestra Historia
+                            </button>
+                        </div>
+                        <!-- Estadísticas rápidas -->
+                        <div class="grid grid-cols-3 gap-6 pt-8 border-t border-gray-800">
+                            <div>
+                                <h3 class="text-2xl font-bold font-serif text-[#D4AF37]">100%</h3>
+                                <p class="text-xs text-gray-400">Tejido Premium</p>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold font-serif text-[#E87EA1]">+15K</h3>
+                                <p class="text-xs text-gray-400">Clientes Satisfechas</p>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold font-serif text-[#D4AF37]">VIP</h3>
+                                <p class="text-xs text-gray-400">Envío Asegurado</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collage de presentación superior -->
+                    <div class="relative grid grid-cols-2 gap-4">
+                        <div class="space-y-4">
+                            <div class="overflow-hidden rounded-2xl border-2 border-[#D4AF37]/40 shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80" alt="Tops Deportivos Sasa Sport" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/600x400/1a1a1a/D4AF37?text=Top+Sasa+Sport'">
+                            </div>
+                            <div class="overflow-hidden rounded-2xl border-2 border-[#E87EA1]/40 shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=600&q=80" alt="Conjunto fitness rosa y dorado" class="w-full h-48 object-cover" onerror="this.src='https://placehold.co/600x400/1a1a1a/E87EA1?text=Fitness+Sasa'">
+                            </div>
+                        </div>
+                        <div class="space-y-4 pt-8">
+                            <div class="overflow-hidden rounded-2xl border-2 border-[#E87EA1]/40 shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=600&q=80" alt="Licras de compresión" class="w-full h-48 object-cover" onerror="this.src='https://placehold.co/600x400/1a1a1a/D4AF37?text=Licras+Sasa'">
+                            </div>
+                            <div class="overflow-hidden rounded-2xl border-2 border-[#D4AF37]/40 shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1549576490-b0b4831ef60a?auto=format&fit=crop&w=600&q=80" alt="Entrenamiento Sasa Sport" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/600x400/1a1a1a/E87EA1?text=Sasa+Active'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Destacados con Collage de Tops y Licras -->
+            <section class="py-20 bg-[#141414]">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                        <span class="text-[#D4AF37] font-semibold text-sm uppercase tracking-widest">Nuestras Joyas Deportivas</span>
+                        <h2 class="text-3xl sm:text-4xl font-serif font-bold">Colección Destacada Tops & Licras</h2>
+                        <p class="text-gray-400">Diseñadas ergonómicamente para realzar tu silueta mientras disfrutas de máxima flexibilidad.</p>
+                    </div>
+
+                    <!-- Cuadrícula Collage Destacados -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="group relative rounded-2xl overflow-hidden bg-[#1A1A1A] border border-[#D4AF37]/30 shadow-xl">
+                            <div class="h-80 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=600&q=80" alt="Top Elegance Gold" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="p-6">
+                                <span class="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">Top Deportivo</span>
+                                <h3 class="text-xl font-serif font-bold mt-1 text-white">Top Aura Gold Edition</h3>
+                                <p class="text-gray-400 text-sm mt-2">Soporte alto con detalles metalizados dorados y tirantes cruzados.</p>
+                                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-800">
+                                    <span class="text-lg font-bold text-[#FFB6C1]">$85.000 COP</span>
+                                    <button onclick="switchPage('catalogo')" class="text-xs bg-[#D4AF37] text-black font-bold px-4 py-2 rounded-lg hover:bg-[#E6C567] transition-colors">Ver Detalles</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="group relative rounded-2xl overflow-hidden bg-[#1A1A1A] border border-[#E87EA1]/30 shadow-xl">
+                            <div class="h-80 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Licra Rosa Luxe" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="p-6">
+                                <span class="text-xs font-bold text-[#E87EA1] uppercase tracking-wider">Licras & Leggings</span>
+                                <h3 class="text-xl font-serif font-bold mt-1 text-white">Licra Compresiva Rose Luxe</h3>
+                                <p class="text-gray-400 text-sm mt-2">Efecto push-up natural, tela anti-transparencias y cintura alta moldeadora.</p>
+                                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-800">
+                                    <span class="text-lg font-bold text-[#FFB6C1]">$120.000 COP</span>
+                                    <button onclick="switchPage('catalogo')" class="text-xs bg-[#E87EA1] text-black font-bold px-4 py-2 rounded-lg hover:bg-[#FFB6C1] transition-colors">Ver Detalles</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="group relative rounded-2xl overflow-hidden bg-[#1A1A1A] border border-[#D4AF37]/30 shadow-xl">
+                            <div class="h-80 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=600&q=80" alt="Conjunto Sasa Sport" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="p-6">
+                                <span class="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">Conjunto Completo</span>
+                                <h3 class="text-xl font-serif font-bold mt-1 text-white">Set Royal Sasa Gold</h3>
+                                <p class="text-gray-400 text-sm mt-2">Combinación perfecta de top y licra a juego con acabados de lujo.</p>
+                                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-800">
+                                    <span class="text-lg font-bold text-[#FFB6C1]">$190.000 COP</span>
+                                    <button onclick="switchPage('catalogo')" class="text-xs bg-gradient-to-r from-[#D4AF37] to-[#E87EA1] text-black font-bold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Ver Detalles</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-12">
+                        <button onclick="switchPage('catalogo')" class="inline-flex items-center space-x-3 text-[#D4AF37] font-semibold border-b-2 border-[#D4AF37] pb-1 hover:text-[#FFB6C1] transition-colors text-lg">
+                            <span>Explorar todo el catálogo de prendas</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- ================= 2. PÁGINA DE CATÁLOGO / SERVICIOS ================= -->
+        <section id="page-catalogo" class="page-section">
+            <div class="bg-[#121212] py-16 border-b border-gray-800">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+                    <span class="text-[#D4AF37] font-semibold text-sm uppercase tracking-widest">Catálogo & Servicios</span>
+                    <h1 class="text-4xl sm:text-5xl font-serif font-bold">Nuestra Colección Deportiva</h1>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Encuentra tops, licras, chaquetas y conjuntos creados con altos estándares de calidad, belleza y comodidad.</p>
+                </div>
+            </div>
+
+            <!-- Filtros de Categorías -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex flex-wrap items-center justify-center gap-3 mb-12">
+                    <button onclick="filterProducts('todos')" class="filter-btn active-filter bg-[#D4AF37] text-black font-semibold px-6 py-2.5 rounded-full transition-all shadow-md">Todas las Prendas</button>
+                    <button onclick="filterProducts('tops')" class="filter-btn bg-[#1A1A1A] border border-gray-700 text-gray-300 font-semibold px-6 py-2.5 rounded-full hover:border-[#D4AF37] transition-all">Tops</button>
+                    <button onclick="filterProducts('licras')" class="filter-btn bg-[#1A1A1A] border border-gray-700 text-gray-300 font-semibold px-6 py-2.5 rounded-full hover:border-[#D4AF37] transition-all">Licras & Leggings</button>
+                    <button onclick="filterProducts('conjuntos')" class="filter-btn bg-[#1A1A1A] border border-gray-700 text-gray-300 font-semibold px-6 py-2.5 rounded-full hover:border-[#D4AF37] transition-all">Conjuntos</button>
+                    <button onclick="filterProducts('chaquetas')" class="filter-btn bg-[#1A1A1A] border border-gray-700 text-gray-300 font-semibold px-6 py-2.5 rounded-full hover:border-[#D4AF37] transition-all">Chaquetas & Hoodies</button>
+                </div>
+
+                <!-- Cuadrícula de Productos / Prendas (Con bastante variedad de imágenes de alta calidad) -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Producto 1 -->
+                    <div class="product-card bg-[#1A1A1A] rounded-2xl overflow-hidden border border-gray-800 hover:border-[#D4AF37] transition-all duration-300 group shadow-xl" data-category="tops">
+                        <div class="relative h-72 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=600&q=80" alt="Top Aura Gold" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1a1a1a/D4AF37?text=Top+Aura'">
+                            <span class="absolute top-4 left-4 bg-[#D4AF37] text-black text-xs font-bold px-3 py-1 rounded-full uppercase">Top</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-serif font-bold text-white">Top Aura Gold Edition</h3>
+                                <span class="text-[#FFB6C1] font-bold text-lg">$85.000</span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Soporte ergonómico con detalles dorados de lujo y máxima transpirabilidad.</p>
+                            <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                                <span class="text-xs text-gray-400">Tallas: S, M, L</span>
+                                <button onclick="addToCart('Top Aura Gold Edition', '$85.000')" class="bg-[#D4AF37] text-black font-semibold px-4 py-2 rounded-xl text-xs hover:bg-[#E6C567] transition-all">
+                                    <i class="fa-solid fa-bag-shopping mr-1"></i> Comprar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Producto 2 -->
+                    <div class="product-card bg-[#1A1A1A] rounded-2xl overflow-hidden border border-gray-800 hover:border-[#E87EA1] transition-all duration-300 group shadow-xl" data-category="licras">
+                        <div class="relative h-72 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Licra Rosa Luxe" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1a1a1a/E87EA1?text=Licra+Luxe'">
+                            <span class="absolute top-4 left-4 bg-[#E87EA1] text-black text-xs font-bold px-3 py-1 rounded-full uppercase">Licra</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-serif font-bold text-white">Licra Compresiva Rose Luxe</h3>
+                                <span class="text-[#FFB6C1] font-bold text-lg">$120.000</span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Efecto push-up, cintura alta modeladora y tejido elástico antideslizante.</p>
+                            <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                                <span class="text-xs text-gray-400">Tallas: XS, S, M, L</span>
+                                <button onclick="addToCart('Licra Compresiva Rose Luxe', '$120.000')" class="bg-[#E87EA1] text-black font-semibold px-4 py-2 rounded-xl text-xs hover:bg-[#FFB6C1] transition-all">
+                                    <i class="fa-solid fa-bag-shopping mr-1"></i> Comprar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Producto 3 -->
+                    <div class="product-card bg-[#1A1A1A] rounded-2xl overflow-hidden border border-gray-800 hover:border-[#D4AF37] transition-all duration-300 group shadow-xl" data-category="conjuntos">
+                        <div class="relative h-72 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=600&q=80" alt="Set Royal Sasa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1a1a1a/D4AF37?text=Conjunto+Royal'">
+                            <span class="absolute top-4 left-4 bg-gradient-to-r from-[#D4AF37] to-[#E87EA1] text-black text-xs font-bold px-3 py-1 rounded-full uppercase">Conjunto</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-serif font-bold text-white">Set Royal Sasa Gold</h3>
+                                <span class="text-[#FFB6C1] font-bold text-lg">$190.000</span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Conjunto completo de top y licra a juego para un look imponente en el gimnasio.</p>
+                            <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                                <span class="text-xs text-gray-400">Tallas: S, M, L</span>
+                                <button onclick="addToCart('Set Royal Sasa Gold', '$190.000')" class="bg-gradient-to-r from-[#D4AF37] to-[#E87EA1] text-black font-semibold px-4 py-2 rounded-xl text-xs hover:opacity-90 transition-all">
+                                    <i class="fa-solid fa-bag-shopping mr-1"></i> Comprar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Producto 4 -->
+                    <div class="product-card bg-[#1A1A1A] rounded-2xl overflow-hidden border border-gray-800 hover:border-[#E87EA1] transition-all duration-300 group shadow-xl" data-category="tops">
+                        <div class="relative h-72 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80" alt="Top Rose Pink" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1a1a1a/E87EA1?text=Top+Rose'">
+                            <span class="absolute top-4 left-4 bg-[#E87EA1] text-black text-xs font-bold px-3 py-1 rounded-full uppercase">Top</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-serif font-bold text-white">Top Rose Elegance</h3>
+                                <span class="text-[#FFB6C1] font-bold text-lg">$79.000</span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Diseño minimalista con escote en V y tejido ultrasuave al tacto.</p>
+                            <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                                <span class="text-xs text-gray-400">Tallas: XS, S, M</span>
+                                <button onclick="addToCart('Top Rose Elegance', '$79.000')" class="bg-[#E87EA1] text-black font-semibold px-4 py-2 rounded-xl text-xs hover:bg-[#FFB6C1] transition-all">
+                                    <i class="fa-solid fa-bag-shopping mr-1"></i> Comprar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Producto 5 -->
+                    <div class="product-card bg-[#1A1A1A] rounded-2xl overflow-hidden border border-gray-800 hover:border-[#D4AF37] transition-all duration-300 group shadow-xl" data-category="chaquetas">
+                        <div class="relative h-72 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1549576490-b0b4831ef60a?auto=format&fit=crop&w=600&q=80" alt="Chaqutea Sport Gold" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1a1a1a/D4AF37?text=Chaqueta+Gold'">
+                            <span class="absolute top-4 left-4 bg-[#D4AF37] text-black text-xs font-bold px-3 py-1 rounded-full uppercase">Chaqueta</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-serif font-bold text-white">Chaqueta Sport Gold Zip</h3>
+                                <span class="text-[#FFB6C1] font-bold text-lg">$160.000</span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Chaqueta ligera con cierre dorado, bolsillos laterales y corte entallado.</p>
+                            <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                                <span class="text-xs text-gray-400">Tallas: S, M, L, XL</span>
+                                <button onclick="addToCart('Chaqueta Sport Gold Zip', '$160.000')" class="bg-[#D4AF37] text-black font-semibold px-4 py-2 rounded-xl text-xs hover:bg-[#E6C567] transition-all">
+                                    <i class="fa-solid fa-bag-shopping mr-1"></i> Comprar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Producto 6 -->
+                    <div class="product-card bg-[#1A1A1A] rounded-2xl overflow-hidden border border-gray-800 hover:border-[#E87EA1] transition-all duration-300 group shadow-xl" data-category="licras">
+                        <div class="relative h-72 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=600&q=80" alt="Licra Gold Contour" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1a1a1a/E87EA1?text=Licra+Contour'">
+                            <span class="absolute top-4 left-4 bg-[#E87EA1] text-black text-xs font-bold px-3 py-1 rounded-full uppercase">Licra</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-serif font-bold text-white">Legging Contour Gold</h3>
+                                <span class="text-[#FFB6C1] font-bold text-lg">$135.000</span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Tecnología de costuras estratégicas que realzan y estilizan la figura femenina.</p>
+                            <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                                <span class="text-xs text-gray-400">Tallas: S, M, L</span>
+                                <button onclick="addToCart('Legging Contour Gold', '$135.000')" class="bg-[#E87EA1] text-black font-semibold px-4 py-2 rounded-xl text-xs hover:bg-[#FFB6C1] transition-all">
+                                    <i class="fa-solid fa-bag-shopping mr-1"></i> Comprar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. PÁGINA NOSOTROS ================= -->
+        <section id="page-nosotros" class="page-section">
+            <div class="bg-[#121212] py-16 border-b border-gray-800">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+                    <span class="text-[#D4AF37] font-semibold text-sm uppercase tracking-widest">Nuestra Esencia</span>
+                    <h1 class="text-4xl sm:text-5xl font-serif font-bold">Sobre Sasa Sport</h1>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Conoce el origen, la historia y la pasión que hay detrás de nuestra marca de ropa deportiva de lujo.</p>
+                </div>
+            </div>
+
+            <!-- Historia de la empresa -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <span class="text-xs font-bold tracking-widest uppercase text-[#D4AF37] bg-[#1A1A1A] border border-[#D4AF37]/40 px-3 py-1 rounded-full">El Inicio de la Empresa</span>
+                        <h2 class="text-3xl sm:text-4xl font-serif font-bold">Cómo nació Sasa Sport</h2>
+                        <p class="text-gray-300 leading-relaxed">
+                            Fundada en 2021, <strong>Sasa Sport</strong> nació del sueño de transformar la indumentaria deportiva tradicional en piezas de alta costura funcional. Notamos que las mujeres deportistas y amantes del fitness a menudo debían elegir entre rendimiento técnico o estilo sofisticado. Decidimos romper ese molde.
+                        </p>
+                        <p class="text-gray-400 leading-relaxed">
+                            Iniciamos en un pequeño estudio con la visión clara de combinar la energía vibrante del entrenamiento con la opulencia de los tonos dorados y la delicadeza del rosa elegante. Hoy en día, vestimos a miles de mujeres empoderadas que buscan destacar tanto en el gimnasio como en su día a día.
+                        </p>
+                        <div class="grid grid-cols-2 gap-6 pt-4">
+                            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-gray-800">
+                                <h3 class="text-[#D4AF37] font-serif font-bold text-xl mb-2">Misión</h3>
+                                <p class="text-sm text-gray-400">Empoderar a la mujer moderna mediante prendas que combinan lujo, confort absoluto y máxima durabilidad deportiva.</p>
+                            </div>
+                            <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-gray-800">
+                                <h3 class="text-[#E87EA1] font-serif font-bold text-xl mb-2">Visión</h3>
+                                <p class="text-sm text-gray-400">Ser la marca líder en activewear de lujo en Latinoamérica, reconocida por nuestros estándares de calidad y diseño inigualable.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Imagen / Collage historia -->
+                    <div class="relative">
+                        <div class="relative rounded-3xl overflow-hidden border-2 border-[#D4AF37]/50 shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80" alt="Historia Sasa Sport" class="w-full h-[500px] object-cover" onerror="this.src='https://placehold.co/800x600/1a1a1a/D4AF37?text=Sasa+Sport+Historia'">
+                        </div>
+                        <div class="absolute -bottom-6 -left-6 bg-[#1A1A1A] border border-[#D4AF37] p-6 rounded-2xl shadow-2xl max-w-xs">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-[#D4AF37] flex items-center justify-center text-black font-bold">
+                                    <i class="fa-solid fa-crown"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Calidad Garantizada</h4>
+                                    <p class="text-xs text-gray-400">Diseño exclusivo para ti</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. PÁGINA DE CONTACTO ================= -->
+        <section id="page-contacto" class="page-section">
+            <div class="bg-[#121212] py-16 border-b border-gray-800">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+                    <span class="text-[#D4AF37] font-semibold text-sm uppercase tracking-widest">Estamos para servirte</span>
+                    <h1 class="text-4xl sm:text-5xl font-serif font-bold">Contáctanos</h1>
+                    <p class="text-gray-400 max-w-2xl mx-auto">¿Tienes dudas sobre tallas, envíos o pedidos personalizados? Escríbenos y te atenderemos de inmediato.</p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Información de Contacto y Canales Directos -->
+                    <div class="space-y-8">
+                        <div>
+                            <span class="text-xs font-bold tracking-widest uppercase text-[#D4AF37] bg-[#1A1A1A] border border-[#D4AF37]/40 px-3 py-1 rounded-full">Canales Oficiales</span>
+                            <h2 class="text-3xl font-serif font-bold mt-4">Conéctate con Sasa Sport</h2>
+                            <p class="text-gray-400 mt-2">Elige tu medio preferido para comunicarte con nuestro equipo de atención al cliente VIP.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- WhatsApp Card -->
+                            <a href="https://wa.me/573001234567?text=Hola,%20quiero%20más%20información%20de%20Sasa%20Sport" target="_blank" class="bg-[#1A1A1A] p-6 rounded-2xl border border-gray-800 hover:border-[#25D366] transition-all group flex items-start space-x-4 shadow-xl">
+                                <div class="w-12 h-12 rounded-xl bg-[#25D366]/20 text-[#25D366] flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white">WhatsApp</h3>
+                                    <p class="text-xs text-gray-400 mt-1">+57 300 123 4567</p>
+                                    <span class="inline-block text-[10px] text-[#25D366] font-semibold mt-2">Chat Directo &rarr;</span>
+                                </div>
+                            </a>
+
+                            <!-- Gmail Card -->
+                            <a href="mailto:contacto@sasasport.com" class="bg-[#1A1A1A] p-6 rounded-2xl border border-gray-800 hover:border-[#EA4335] transition-all group flex items-start space-x-4 shadow-xl">
+                                <div class="w-12 h-12 rounded-xl bg-[#EA4335]/20 text-[#EA4335] flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white">Gmail / Correo</h3>
+                                    <p class="text-xs text-gray-400 mt-1">contacto@sasasport.com</p>
+                                    <span class="inline-block text-[10px] text-[#EA4335] font-semibold mt-2">Enviar Mensaje &rarr;</span>
+                                </div>
+                            </a>
+
+                            <!-- Facebook Card -->
+                            <a href="https://facebook.com" target="_blank" class="bg-[#1A1A1A] p-6 rounded-2xl border border-gray-800 hover:border-[#1877F2] transition-all group flex items-start space-x-4 shadow-xl">
+                                <div class="w-12 h-12 rounded-xl bg-[#1877F2]/20 text-[#1877F2] flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white">Facebook</h3>
+                                    <p class="text-xs text-gray-400 mt-1">/SasaSportOfficial</p>
+                                    <span class="inline-block text-[10px] text-[#1877F2] font-semibold mt-2">Síguenos &rarr;</span>
+                                </div>
+                            </a>
+
+                            <!-- Instagram Card -->
+                            <a href="https://instagram.com" target="_blank" class="bg-[#1A1A1A] p-6 rounded-2xl border border-gray-800 hover:border-[#E1306C] transition-all group flex items-start space-x-4 shadow-xl">
+                                <div class="w-12 h-12 rounded-xl bg-[#E1306C]/20 text-[#E1306C] flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white">Instagram</h3>
+                                    <p class="text-xs text-gray-400 mt-1">@SasaSport_Luxury</p>
+                                    <span class="inline-block text-[10px] text-[#E1306C] font-semibold mt-2">Ver Galería &rarr;</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de Contacto Estilizado -->
+                    <div class="bg-[#1A1A1A] p-8 rounded-3xl border border-[#D4AF37]/30 shadow-2xl">
+                        <h3 class="text-2xl font-serif font-bold mb-2">Envíanos un Mensaje</h3>
+                        <p class="text-gray-400 text-sm mb-6">Completa el formulario y te responderemos en menos de 2 horas hábiles.</p>
+                        
+                        <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">Tu Nombre</label>
+                                <input type="text" id="contact-name" required placeholder="Ej. Camila Torres" class="w-full bg-[#121212] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">Correo Electrónico (Gmail / Otro)</label>
+                                <input type="email" id="contact-email" required placeholder="ejemplo@gmail.com" class="w-full bg-[#121212] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">Mensaje o Consulta</label>
+                                <textarea id="contact-msg" rows="4" required placeholder="Cuéntanos qué prenda te interesa o qué duda tienes..." class="w-full bg-[#121212] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gradient-to-r from-[#D4AF37] to-[#E87EA1] text-black font-bold py-3.5 rounded-xl shadow-lg hover:opacity-95 transition-all">
+                                Enviar Mensaje
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#121212] border-t border-[#D4AF37]/30 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#D4AF37] to-[#E87EA1] flex items-center justify-center">
+                        <span class="font-serif font-bold text-black text-xl">S</span>
+                    </div>
+                    <span class="text-xl font-serif font-bold tracking-wider gold-gradient-text">SASA SPORT</span>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    Ropa deportiva de lujo diseñada para mujeres que buscan destacar con elegancia, comodidad y tecnología de punta.
+                </p>
+                <div class="flex space-x-4 text-xl text-[#D4AF37]">
+                    <a href="https://wa.me/573001234567" target="_blank" class="hover:text-[#FFB6C1] transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="mailto:contacto@sasasport.com" class="hover:text-[#FFB6C1] transition-colors"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="https://facebook.com" target="_blank" class="hover:text-[#FFB6C1] transition-colors"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://instagram.com" target="_blank" class="hover:text-[#FFB6C1] transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-serif font-bold text-white text-lg mb-4">Páginas</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><button onclick="switchPage('inicio')" class="hover:text-[#D4AF37] transition-colors">Inicio</button></li>
+                    <li><button onclick="switchPage('catalogo')" class="hover:text-[#D4AF37] transition-colors">Catálogo & Servicios</button></li>
+                    <li><button onclick="switchPage('nosotros')" class="hover:text-[#D4AF37] transition-colors">Nosotros</button></li>
+                    <li><button onclick="switchPage('contacto')" class="hover:text-[#D4AF37] transition-colors">Contacto</button></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-serif font-bold text-white text-lg mb-4">Colección</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="#" onclick="switchPage('catalogo')" class="hover:text-[#D4AF37] transition-colors">Tops Exclusivos</a></li>
+                    <li><a href="#" onclick="switchPage('catalogo')" class="hover:text-[#D4AF37] transition-colors">Licras Compresivas</a></li>
+                    <li><a href="#" onclick="switchPage('catalogo')" class="hover:text-[#D4AF37] transition-colors">Conjuntos Gold</a></li>
+                    <li><a href="#" onclick="switchPage('catalogo')" class="hover:text-[#D4AF37] transition-colors">Chaquetas Sport</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-serif font-bold text-white text-lg mb-4">Newsletter VIP</h4>
+                <p class="text-xs text-gray-400 mb-4">Suscríbete para recibir ofertas doradas y preventas exclusivas.</p>
+                <form onsubmit="handleNewsletter(event)" class="space-y-2">
+                    <input type="email" required placeholder="Tu correo electrónico" class="w-full bg-[#1A1A1A] border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#D4AF37]">
+                    <button type="submit" class="w-full bg-[#D4AF37] text-black text-xs font-bold py-2.5 rounded-xl hover:bg-[#E6C567] transition-colors">Suscribirme</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-gray-800 pt-8 text-center text-xs text-gray-500">
+            &copy; 2026 Sasa Sport. Todos los derechos reservados. Diseñado con elegancia en tonos dorados y rosas.
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT INTERACTIVO -->
+    <script>
+        // Función para cambiar de "página" (vistas dentro de la SPA multipágina)
+        function switchPage(pageId) {
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => {
+                sec.classList.remove('active');
+            });
+
+            // Mostrar la sección seleccionada
+            const target = document.getElementById('page-' + pageId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            // Actualizar botones de navegación de escritorio
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('text-rose-soft', 'border-[#D4AF37]');
+                btn.classList.add('text-gray-300', 'border-transparent');
+            });
+
+            const activeNav = document.getElementById('nav-' + pageId);
+            if (activeNav) {
+                activeNav.classList.remove('text-gray-300', 'border-transparent');
+                activeNav.classList.add('text-rose-soft', 'border-[#D4AF37]');
+            }
+
+            // Scroll arriba suavemente
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Menú móvil toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Sistema de Filtrado de Productos en Catálogo
+        function filterProducts(category) {
+            // Actualizar clases de botones de filtro
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.classList.remove('bg-[#D4AF37]', 'text-black');
+                btn.classList.add('bg-[#1A1A1A]', 'text-gray-300', 'border', 'border-gray-700');
+            });
+            event.target.classList.remove('bg-[#1A1A1A]', 'text-gray-300', 'border', 'border-gray-700');
+            event.target.classList.add('bg-[#D4AF37]', 'text-black');
+
+            // Filtrar las tarjetas de productos
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(card => {
+                const cat = card.getAttribute('data-category');
+                if (category === 'todos' || cat === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Sistema de notificaciones flotantes (Toast personalizado en lugar de alert)
+        function showToast(title, message, iconClass = 'fa-circle-check') {
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toast-title');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastTitle.textContent = title;
+            toastMsg.textContent = message;
+            toastIcon.className = `fa-solid ${iconClass} text-[#D4AF37] text-xl`;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        // Simulación de agregar al carrito / comprar
+        function addToCart(productName, price) {
+            showToast('¡Prenda Seleccionada!', `Has añadido "${productName}" (${price}) a tu lista de compra. Redirigiendo a WhatsApp...`, 'fa-bag-shopping');
+            
+            setTimeout(() => {
+                const message = encodeURIComponent(`Hola Sasa Sport, quiero comprar la prenda: ${productName} por un precio de ${price}.`);
+                window.open(`https://wa.me/573001234567?text=${message}`, '_blank');
+            }, 1200);
+        }
+
+        // Manejador del Formulario de Contacto
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            showToast('¡Mensaje Enviado!', `Gracias ${name}, tu mensaje ha sido recibido con éxito. Te contactaremos pronto.`, 'fa-paper-plane');
+            document.getElementById('contact-form').reset();
+        }
+
+        // Manejador del Newsletter
+        function handleNewsletter(e) {
+            e.preventDefault();
+            showToast('¡Suscripción Exitosa!', 'Te has suscrito al club VIP de Sasa Sport.', 'fa-gift');
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
